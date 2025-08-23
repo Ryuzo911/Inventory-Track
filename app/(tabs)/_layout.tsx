@@ -44,7 +44,7 @@ const TabsLayout = () => {
         elevation: 0, 
         height: 70,
         position: "absolute",
-        margin: 20
+        margin: 20,
       },
       tabBarItemStyle: {
         justifyContent: "center",
@@ -88,6 +88,7 @@ const TabsLayout = () => {
           <CustomTabBarIcon label="Transaction" icon="plus" {...other} />
         )
       }}/>
+      <Tabs.Screen name="report" options={{title: "Report", tabBarIcon: (other) => (<CustomTabBarIcon label="Report" icon="note" {...other} />)}}/>
       <Tabs.Screen 
       name="profile" 
       options={{

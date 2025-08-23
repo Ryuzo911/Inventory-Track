@@ -8,6 +8,11 @@ const apiProduct = {
         const {data} = await api.get("/product")
         return data;
     },
+
+    getProductById: async (id: Product["id"]): Promise<Product> => {
+        const {data} = await api.get(`/product/${id}`)
+        return data;
+    },
     postProduct: async (payload: Omit<Product, "id">): Promise<Product> => {
         const {data} = await api.post("/product")
         return data;

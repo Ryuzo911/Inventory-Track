@@ -9,6 +9,13 @@ export const useGetProduct = () => {
   });
 };
 
+export const useShowProduct = (id: Product["id"]) => {
+  return useQuery<Product>({
+    queryKey: ["product", id],
+    queryFn: async () => await apiProduct.getProductById(id),
+  });
+};
+
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({

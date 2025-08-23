@@ -3,5 +3,6 @@ export type Product = {
     name: string,
     stock: number,
     category_id: number,
+    category: string
     image_url: string,
 };

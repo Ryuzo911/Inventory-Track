@@ -44,9 +44,10 @@ const HomeScreen = () => {
             <Text variant="subtitle">Products</Text>
           </Wrapper>
           <Wrapper justifyContent='center' alignItems='center'>
-            {product.map((product) => (
+            {/* {product.map((product) => (
               <Text variant='title'>{product.stock}</Text>
-            ))}
+            ))} */}
+            <Text variant="title">{product.reduce((total, product) => total + product.stock, 0)}</Text>
             <Text variant="subtitle">Quantities</Text>
           </Wrapper>
         </Wrapper>}/>
@@ -55,11 +56,11 @@ const HomeScreen = () => {
     <Card header={
       <Wrapper flexDirection='row' justifyContent='space-between' alignItems='center'>
         <Text variant="title" color={color.primary.bg}>Low Stock</Text>
-        <Text variant='text' color={color.primary.bg} onPress={() => router.push("/")}>See all</Text>
+        <Text variant='text' color={color.primary.bg} onPress={() => router.push("/product/lowstock")} style={{textDecorationLine: 'underline'}}>See all</Text>
       </Wrapper>
     }>
      {product?.filter((product) => product.stock < 5).map((product) => (
-        <MenuItem key={product.id} title={product.name} subtitle={`Low stock: ${product.stock} left`} icon="package" onPress={() => router.push("/")} disabled={false} image_url={product.image_url}/>
+        <MenuItem key={product.id} title={product.name} subtitle={`Low stock: ${product.stock} left`} icon="package" onPress={() => router.push(`/product/${product.id}`)} disabled={false} image_url={product.image_url}/>
      )
     )}
     </Card>

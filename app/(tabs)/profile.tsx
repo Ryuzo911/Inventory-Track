@@ -1,6 +1,7 @@
 import ChangeAvatar from "@/components/ChangeAvatar";
 import ChangePassword from "@/components/ChangePassword";
-import ProfileInfo from "@/components/ProfileInfo";
+import Logout from "@/components/Logout";
+import ProfileInfo from "@/components/Logout";
 import TabPill from "@/components/TabPill";
 import Text from "@/components/Text";
 import UserCard from "@/components/UserCard";
@@ -16,13 +17,8 @@ const ProfileScreen = () => {
             <Wrapper padding={20} gap={20}>
                 <UserCard />
             </Wrapper>
-            <TabPill options={["Profile info", "Security", "Avatar"]} wrapperStyle={{flex: 1, justifyContent: "center"}} active={active} setActive={setActive}/>
+            <TabPill options={[ "Security", "Avatar", "Danger"]} wrapperStyle={{flex: 1, justifyContent: "center"}} active={active} setActive={setActive}/>
             <Wrapper padding={30} gap={20}>
-                {active === "Profile info" && (
-                    <Wrapper gap={20}>
-                      <ProfileInfo />
-                    </Wrapper>
-                )}
                 {active === "Security" && (
                     <Wrapper gap={20}>
                         <ChangePassword/>
@@ -31,6 +27,11 @@ const ProfileScreen = () => {
                 {active === "Avatar" && (
                     <Wrapper gap={20}>
                         <ChangeAvatar />
+                    </Wrapper>
+                )}
+                {active === "Danger" && (
+                    <Wrapper gap={20}>
+                      <Logout />
                     </Wrapper>
                 )}
             </Wrapper>

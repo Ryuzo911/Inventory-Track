@@ -7,27 +7,37 @@ import { useGetProduct } from '@/hooks/useProduct'
 import { Octicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native'
+import { FlatList, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 
 const ProductScreen = () => {
   const [search, setSearch] = useState<string>("");
   const {data, isLoading, refetch} = useGetProduct();
   const {color} = useColor();
+  const tabBarHeight = useBottomTabBarHeight();
 
   const listData = data?.filter((item) => item.name.toString().toLowerCase().includes(search.toLowerCase()))
 
   return (
       <Wrapper>
-        <Wrapper>
+        <Wrapper key={"header"} padding={20}>
           <Input placeholder="Cari Produk" value={search} onChangeText={setSearch} wrapperStyle={{}}/>
         </Wrapper>
-        <ScrollView contentContainerStyle={{flexGrow: 1, gap: 5, padding: 20,}} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch}/>}>
-          {listData?.map((product) => (
-            <TouchableOpacity onPress={() => router.push(`/`)}>
-                <MenuItem key={product.id} title={product.name} subtitle={product.stock.toString()} icon="package" disabled={false}/>
+          <FlatList data={listData}  keyExtractor={(item) => item.id.toString()} renderItem={({item}) => (
+            <TouchableOpacity>
+               <MenuItem
+               key={item.id}
+              title={item.name}
+              subtitle={item.stock.toString()}
+              icon="package"
+              disabled={false}
+              onPress={() => router.push(`/product/${item.id}`)}
+            />
             </TouchableOpacity>
-          ))}
-        </ScrollView>
+          )} contentContainerStyle={{
+            padding: 20,
+            paddingBottom: tabBarHeight + 20,
+          }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />} />
       </Wrapper>
     
   )
