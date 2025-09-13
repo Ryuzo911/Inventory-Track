@@ -1,20 +1,20 @@
 import { useColor } from "@/hooks/useColor";
 import { FC } from "react";
-import Wrapper from "./Wrapper";
+import Wrapper from "../Wrapper";
 import { Image, TouchableOpacity } from "react-native";
 import { Octicons } from "@expo/vector-icons";
-import Text from "./Text";
+import Text from "../Text";
 import { useGetCategory } from "@/hooks/useCategory";
 
 type ProductCardProps = {
     name: string;
     stock: number;
-    
     image_url: string;
 }
 
 const ProductCard: FC<ProductCardProps> = ({name, stock, image_url}) => {
     const {color} = useColor();
+    console.log("ProductCard rendered with name:", name, "stock:", stock, "image_url:", image_url);
 
     return (
         <Wrapper padding={20} borderRadius={12} gap={12} backgroundColor={color.base.bg}>

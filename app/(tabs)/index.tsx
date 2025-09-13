@@ -1,6 +1,7 @@
 import Card from '@/components/Card';
 import Loading from '@/components/Loading';
 import MenuItem from '@/components/MenuItem';
+import ProductItem from '@/components/product/ProductItem';
 import Text from '@/components/Text';
 import Wrapper from '@/components/Wrapper';
 import { ThemeColors, useColor } from '@/hooks/useColor';
@@ -44,9 +45,6 @@ const HomeScreen = () => {
             <Text variant="subtitle">Products</Text>
           </Wrapper>
           <Wrapper justifyContent='center' alignItems='center'>
-            {/* {product.map((product) => (
-              <Text variant='title'>{product.stock}</Text>
-            ))} */}
             <Text variant="title">{product.reduce((total, product) => total + product.stock, 0)}</Text>
             <Text variant="subtitle">Quantities</Text>
           </Wrapper>
@@ -60,7 +58,7 @@ const HomeScreen = () => {
       </Wrapper>
     }>
      {product?.filter((product) => product.stock < 5).map((product) => (
-        <MenuItem key={product.id} title={product.name} subtitle={`Low stock: ${product.stock} left`} icon="package" onPress={() => router.push(`/product/${product.id}`)} disabled={false} image_url={product.image_url}/>
+        <ProductItem key={product.id} image_url={product.image_url ?? ''} name={product.name} stock={product.stock} onPress={() => router.push(`/product/${product.id}`)}/>
      )
     )}
     </Card>

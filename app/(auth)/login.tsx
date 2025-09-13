@@ -22,7 +22,6 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     mutateAsync({email, password})
     .then((token) => {
-      console.log(token);
       signIn(token);
       router.replace("/")
     })

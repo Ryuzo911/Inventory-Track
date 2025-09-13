@@ -23,6 +23,11 @@ const apiUser = {
     getMe: async () => {
         const {data} = await api.get('/user');
         return data;
+    },
+    logout: async () => {
+        const{data} = await api.post('/logout');
+        await SecureStore.deleteItemAsync('token');
+        return data;
     }
 };
 

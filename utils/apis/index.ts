@@ -3,16 +3,16 @@ import * as SecureStore from "expo-secure-store";
 
 
 const api = axios.create({
-  baseURL: "http://10.69.156.168:8000/api",
+  baseURL: "http://10.225.155.168:8000/api",
   headers: {
     "Accept": "application/json"
   },
+  timeout: 10000, 
 });
 
 api.interceptors.request.use(
   async (config) => {
     const token = await SecureStore.getItemAsync("token");
-    console.log("Saved token:", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -23,5 +23,8 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+
+
 
 export default api;

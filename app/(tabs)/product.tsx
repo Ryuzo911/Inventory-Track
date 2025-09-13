@@ -9,6 +9,11 @@ import { router } from 'expo-router'
 import React, { useState } from 'react'
 import { FlatList, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
+import ProductItem from '@/components/product/ProductItem'
+import Button from '@/components/Button'
+import IconButton from '@/components/IconButton'
+import CreateProduct from '@/components/product/CreateProduct'
+
 
 const ProductScreen = () => {
   const [search, setSearch] = useState<string>("");
@@ -21,22 +26,16 @@ const ProductScreen = () => {
   return (
       <Wrapper>
         <Wrapper key={"header"} padding={20}>
-          <Input placeholder="Cari Produk" value={search} onChangeText={setSearch} wrapperStyle={{}}/>
+          <Input placeholder="Cari Produk" value={search} onChangeText={setSearch} wrapperStyle={{}}/>  
+          <CreateProduct />
         </Wrapper>
-          <FlatList data={listData}  keyExtractor={(item) => item.id.toString()} renderItem={({item}) => (
+          <FlatList data={listData}  keyExtractor={(item) => item.id?.toString()} renderItem={({item}) => (
             <TouchableOpacity>
-               <MenuItem
-               key={item.id}
-              title={item.name}
-              subtitle={item.stock.toString()}
-              icon="package"
-              disabled={false}
-              onPress={() => router.push(`/product/${item.id}`)}
-            />
+              <ProductItem image_url={item.image_url} name={item.name} stock={item.stock} onPress={() => router.push(`/product/${item.id}`)}/>
             </TouchableOpacity>
           )} contentContainerStyle={{
             padding: 20,
-            paddingBottom: tabBarHeight + 20,
+            paddingBottom: tabBarHeight + 50,
           }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />} />
       </Wrapper>
     
