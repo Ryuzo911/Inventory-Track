@@ -1,92 +1,116 @@
-import { useGetCategory } from "@/hooks/useCategory";
-import { useCreateProduct } from "@/hooks/useProduct";
-import api from "@/utils/apis";
-import axios from "axios";
-import { useState } from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import React, { FC, useState } from "react";
+import { Alert } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet from "../BottomSheet";
 import Wrapper from "../Wrapper";
+import Text from "../Text";
 import Input from "../Input";
 import Select from "../Select";
 import ImageSelector from "../ImageSelector";
 import Button from "../Button";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet from "../BottomSheet";
-import FormGroup from "../FormGroup";
 import Badge from "../Badge";
-import Text from "../Text";
+import { useGetCategory } from "@/hooks/useCategory";
+import { useCreateProduct } from "@/hooks/useProduct";
 import { CreateProductPayload } from "@/utils/types/product";
-import apiProduct from "@/utils/apis/apiProduct";
 
-const CreateProduct = () => {
-    const [name, setName] = useState("");
-    const [stock, setStock] = useState("");
-    const [category, setCategory]= useState<number|undefined>(undefined);
-    const [image, setImage] = useState<string | null>(null);
-    const [show, setShow] = useState<boolean>(false);
+type CreateProductSheetProps = {
+  visible: boolean;
+  onRequestClose: () => void;
+};
 
-    const {data: categories} = useGetCategory();
-    const createProduct = useCreateProduct();
+const CreateProductSheet: FC<CreateProductSheetProps> = ({ visible, onRequestClose }) => {
+  const { data: categories } = useGetCategory();
+  const createProduct = useCreateProduct();
 
-    // const handleImageUpload = async (uri: string) => {
-    //     const formData = new FormData();
-    //     formData.append("image", {
-    //         uri,
-    //         name: "image.jpg",
-    //         type: "image/jpeg",
-    //     } as any);
+  const [name, setName] = useState<string>("");
+  const [stock, setStock] = useState<string>("0");
+  const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
+  const [image, setImage] = useState<string | null>(null);
 
-    //     try {
-    //         const res = await apiProduct.postProduct;
-    //         return res;
-    //     } catch (err) {
-    //         console.error("Error uploading image",err);
-    //         throw err;
-    //     };
-    // };
+  const categoryOptions = (categories || []).map((c: any) => ({
+    label: c.name,
+    value: String(c.id),
+  }));
 
- const handleSave = () => {
-  const payload: CreateProductPayload = {
-    name,
-    stock: parseInt(stock) || 0,
-    category_id: Number(category) || 0,
-    image, // langsung URI string dari ImageSelector
+  const resetForm = () => {
+    setName("");
+    setStock("0");
+    setCategoryId(undefined);
+    setImage(null);
   };
 
-  createProduct.mutate(payload, {
-    onSuccess: () => {
-      Alert.alert("Success", "Product created");
-      setName("");
-      setStock("");
-      setCategory(undefined);
-      setImage(null);
-    },
-    onError: (err) => {
-      console.error("Error create:", err);
-      Alert.alert("Error", "Gagal create product");
-    },
-  });
+  const handleSave = () => {
+    if (!name.trim()) {
+      return Alert.alert("Nama produk wajib diisi");
+    }
+    if (!categoryId) {
+      return Alert.alert("Pilih kategori produk");
+    }
+    const payload: CreateProductPayload = {
+      name: name.trim(),
+      stock: parseInt(stock) || 0,
+      category_id: Number(categoryId),
+      image,
+    };
+
+    createProduct.mutate(payload, {
+      onSuccess: () => {
+        Alert.alert("Sukses", "Produk berhasil dibuat");
+        resetForm();
+        onRequestClose();
+      },
+      onError: (err: any) => {
+        console.error("Error create product:", err);
+        const msg = err?.response?.data?.message || err?.message || "Gagal membuat produk";
+        Alert.alert("Gagal", msg);
+      },
+    });
+  };
+
+  const saveDisabled = createProduct.isPending || !name.trim() || !categoryId;
+
+  return (
+  
+      <BottomSheet title="Tambah Produk" visible={visible} onRequestClose={onRequestClose}>
+        <Wrapper padding={16} gap={12}>
+          <Text variant="title">Tambah Produk</Text>
+
+          <Input
+            label="Nama Produk"
+            placeholder="Contoh: Kopi Arabika"
+            value={name}
+            onChangeText={setName}
+          />
+
+          <Input
+            label="Stok Produk"
+            keyboardType="numeric"
+            value={stock}
+            onChangeText={(t) => {
+              const cleaned = t.replace(/[^0-9]/g, "");
+              setStock(cleaned);
+            }}
+          />
+
+          <Select
+            label="Kategori"
+            placeholder="Pilih kategori"
+            value={categoryId ? String(categoryId) : ""}
+            options={categoryOptions}
+            onChange={(val) => setCategoryId(parseInt(val) || undefined)}
+          />
+
+          <ImageSelector label="Pilih Gambar (opsional)" value={image || ""} onChange={setImage} />
+
+          <Button
+            label={createProduct.isPending ? "Menyimpan..." : "Simpan Produk"}
+            onPress={handleSave}
+            disabled={saveDisabled}
+          />
+        </Wrapper>
+      </BottomSheet>
+    
+  );
 };
 
-
-    return (
-        <GestureHandlerRootView>
-            <TouchableOpacity onPress={() => setShow(!show)}>
-                <Badge label="Tambah Produk" color="neutral"/>
-            </TouchableOpacity>
-            <BottomSheet visible={show} title="Tambah Produk" onRequestClose={() => setShow(false)}>
-                    <Input label="Nama Produk" placeholder="Nama Produk" value={name} onChangeText={setName}/>
-                    <Input label="Stok Produk" placeholder="Stok Produk" value={stock} onChangeText={setStock} keyboardType="numeric"/>
-                    <Select label="Kategori"  value={categories?.find(c => c.id === category)?.id.toString()} options={categories?.map((cat) => ({label: cat.name, value: cat.id.toString()})) || []} onChange={(id) => {
-                        console.log('id', id);
-                        setCategory(parseInt(id));
-                    }}/>
-                    <ImageSelector label="Pilih Gambar Produk" value={image || ""} onChange={setImage}/>
-
-                    <Text>{JSON.stringify(category)}</Text>
-                <Button label="Simpan" icon="check" onPress={handleSave}/>
-            </BottomSheet>
-        </GestureHandlerRootView>
-    )
-};
-
-export default CreateProduct;
+export default CreateProductSheet;

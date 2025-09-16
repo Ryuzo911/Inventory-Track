@@ -7,9 +7,9 @@ import Text from "../Text";
 import { useGetCategory } from "@/hooks/useCategory";
 
 type ProductCardProps = {
-    name: string;
-    stock: number;
-    image_url: string;
+    name?: string;
+    stock?: number;
+    image_url?: string;
 }
 
 const ProductCard: FC<ProductCardProps> = ({name, stock, image_url}) => {
@@ -29,7 +29,7 @@ const ProductCard: FC<ProductCardProps> = ({name, stock, image_url}) => {
                     )}
                     <Wrapper flex={1} alignItems="center">
                         <Text variant="title">{name}</Text>
-                        <Text variant="subtitle">Stock: {stock}</Text>
+                        <Text variant="subtitle">{stock}</Text>
                     </Wrapper>
                 </Wrapper>
             </TouchableOpacity>

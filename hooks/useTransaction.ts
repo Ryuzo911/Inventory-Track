@@ -9,19 +9,19 @@ export const useGetTransaction = () => {
   });
 };
 
-export const useCreateProduct = () => {
+export const useCreateTransaction = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: Omit<Transaction, "id">) => {
-      return await apiTransaction.postTransaction(data);
+    mutationFn: async (payload: any) => {
+      return await apiTransaction.postTransaction(payload);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transaction"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
     },
   });
 };
 
-export const useEditProduct = () => {
+export const useEditTransaction = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: Transaction) => {
@@ -33,7 +33,7 @@ export const useEditProduct = () => {
   });
 };
 
-export const useDeleteProduct = () => {
+export const useDeleteTransaction = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: Transaction["id"]) => {

@@ -7,7 +7,7 @@ const apiTransaction = {
         return data;
     },
     postTransaction: async (payload: Omit<Transaction, "id">): Promise<Transaction> => {
-        const {data} = await api.post("/transaction")
+        const {data} = await api.post("/transaction", payload)
         return data;
     },
     putTransaction: async (user: Transaction) => {
