@@ -2,6 +2,7 @@ import api from "@/utils/apis";
 import apiProduct from "@/utils/apis/apiProduct";
 import { CreateProductPayload, EditProductPayload, Product } from "@/utils/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ImageComponent } from "react-native";
 
 export const useGetProduct = () => {
   return useQuery<Product[]>({
@@ -47,41 +48,44 @@ export const useCreateProduct = () => {
 };
 
 export const useEditProduct = () => {
-  const qc = useQueryClient();
+  const isLocalFile = (s?: string | null) =>
+  !!s && (s.startsWith("file://") || s.startsWith("content://"));
+
+   const qc = useQueryClient();
 
   return useMutation({
     mutationFn: async (payload: EditProductPayload) => {
-      const { id, image, ...rest } = payload;
+      const {id, image, ...rest} = payload;
 
-      // If image is local file URI -> send multipart FormData
-      if (image && (image.startsWith("file://") || image.startsWith("content://"))) {
+      if (isLocalFile(image)) {
         const form = new FormData();
         form.append("_method", "PUT");
-        // append other fields (only defined ones)
         Object.entries(rest).forEach(([k, v]) => {
           if (v !== undefined && v !== null) form.append(k, String(v));
         });
 
+        const ext = (image!.split(".").pop() || "jpg").replace(/[^a-z0-9]/gi, "");
+        const mimeType = ext.toLowerCase().includes("jpg") ? "image/jpeg" : `image/${ext}`;
+
         form.append("image", {
           uri: image,
-          name: `product_${Date.now()}.jpg`,
-          type: "image/jpeg",
+          name: `product_${Date.now()}.${ext}`,
+          type: mimeType,
         } as any);
 
-        const res = await apiProduct.putProduct(id, form);
-        return res.data;
+        const res = await apiProduct.uploadProductFetch(id, form);
+        return res;
       }
 
-      // No local image -> simple JSON PUT
-      const jsonPayload: any = { ...rest };
-      // if image is remote url and you want to keep it, you can omit it or include as image_url depending backend
+      const jsonPayload: any = {...rest};
+      if (image) {jsonPayload.image = image;}
+
       const res = await apiProduct.putProduct(id, jsonPayload);
       return res.data;
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["products"] });
       qc.invalidateQueries({ queryKey: ["product"] });
-    },
+    }
   });
 };
 

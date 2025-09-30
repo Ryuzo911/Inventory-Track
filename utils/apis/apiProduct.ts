@@ -1,5 +1,6 @@
 import api from ".";
 import { CreateProductPayload, Product } from "../types/product";
+import * as SecureStore from "expo-secure-store";
 
 
 const apiProduct = {
@@ -18,21 +19,32 @@ const apiProduct = {
         return data;
     },
 
-     putProduct: (id: number, payload: any) => {
-       if (payload instanceof FormData) {
-        return api.post(`/products/${id}`, payload, {
-         headers: {
-           Accept: "application/json",
-        },
-        });
-      } else {
-          return api.put(`/products/${id}`, payload, {
-            headers: {
-              Accept: "application/json",
-            },
-          });
-        }
-    },
+  uploadProductFetch: async (id: number, fd: FormData) => {
+    const token = await SecureStore.getItemAsync("token");
+
+    const res = await fetch(`http://10.225.155.168:8000/api/product/${id}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: fd,
+    });
+
+    if (!res.ok) {
+      const json = await res.json();
+      throw new Error(`HTTP error! status: ${res.status}, message: ${JSON.stringify(json)}`);
+    }
+    return res.json();
+  },
+
+  putProduct: (id: number, payload: any) => {
+    return api.put(`/product/${id}`, payload, {
+      headers: {
+        Accept: "application/json",
+      }
+    })
+  },
 
     deleteProduct: async (id: Product["id"]) => {
         return await api.delete(`/product/${id}`)

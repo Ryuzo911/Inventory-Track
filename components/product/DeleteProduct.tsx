@@ -20,6 +20,7 @@ const DeleteProduct: FC<DeleteProductProps> = ({ product }) => {
       .then(() => {
         setShow(false);
         Alert.alert("Sukses", `Produk "${product.name}" telah dihapus.`);
+        console.log("Produk dihapus:", product.id);
       })
       .then(() => router.back())
       .catch((e) => {

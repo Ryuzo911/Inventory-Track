@@ -41,6 +41,9 @@ importers:
       expo-secure-store:
         specifier: ~15.0.7
         version: 15.0.7(expo@54.0.7)
+      expo-sharing:
+        specifier: ~14.0.7
+        version: 14.0.7(expo@54.0.7)
       expo-splash-screen:
         specifier: ~31.0.10
         version: 31.0.10(expo@54.0.7)
@@ -2305,6 +2308,11 @@ packages:
 
   expo-secure-store@15.0.7:
     resolution: {integrity: sha512-9q7+G1Zxr5P6J5NRIlm86KulvmYwc6UnQlYPjQLDu1drDnerz6AT6l884dPu29HgtDTn4rR0heYeeGFhMKM7/Q==}
+    peerDependencies:
+      expo: '*'
+
+  expo-sharing@14.0.7:
+    resolution: {integrity: sha512-t/5tR8ZJNH6tMkHXlF7453UafNIfrpfTG+THN9EMLC4Wsi4bJuESPm3NdmWDg2D4LDALJI/LQo0iEnLAd5Sp4g==}
     peerDependencies:
       expo: '*'
 
@@ -7139,6 +7147,10 @@ snapshots:
       - supports-color
 
   expo-secure-store@15.0.7(expo@54.0.7):
+    dependencies:
+      expo: 54.0.7(@babel/core@7.28.0)(@expo/metro-runtime@5.0.4(react-native@0.81.4(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.1.0)))(expo-router@6.0.5)(react-native@0.81.4(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.1.0))(react@19.1.0)
+
+  expo-sharing@14.0.7(expo@54.0.7):
     dependencies:
       expo: 54.0.7(@babel/core@7.28.0)(@expo/metro-runtime@5.0.4(react-native@0.81.4(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.1.0)))(expo-router@6.0.5)(react-native@0.81.4(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.1.0))(react@19.1.0)
 

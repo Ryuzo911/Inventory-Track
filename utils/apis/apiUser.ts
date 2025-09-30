@@ -3,9 +3,7 @@ import api from "@/utils/apis";
 import * as SecureStore from "expo-secure-store";
 
 export type LoginPayload = Pick<User, 'email' | 'password'>
-export type RegisterPayload = Pick<User, 'name' | 'email' | 'password'> & {
-    password_confirmation: string
-};
+export type RegisterPayload = Pick<User, 'name' | 'email' | 'password'>
 
 const apiUser = {
     login: async (payload: LoginPayload) => {

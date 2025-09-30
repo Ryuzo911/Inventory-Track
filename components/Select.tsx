@@ -30,7 +30,7 @@ const Select: FC<SelectProps> = ({label, placeholder = "Pilih", withReset = true
                   placeholder={placeholder}
                   value={options.find((o) => o.value === value)?.label || ""}
                 />
-                <Octicons name="chevron-down" color={color.base.content} size={22} style={{position: "absolute", right: 16, bottom: 15}}/>
+                <Octicons name="chevron-down" color={color.base.content} size={10} style={{position: "absolute", right: 10, bottom: 30}}/>
             </TouchableOpacity>
             <BottomSheet title={placeholder} visible={show} onRequestClose={() => setShow(false)}>
                 <ScrollView style={{maxHeight: 500}} showsVerticalScrollIndicator={false}>
@@ -39,7 +39,7 @@ const Select: FC<SelectProps> = ({label, placeholder = "Pilih", withReset = true
                             <TouchableOpacity
                               style={{paddingHorizontal: 20, borderRadius: 10, backgroundColor: opt.value === value ? color.card.bg : "transparent", height: 48, justifyContent: "center"}}
                               key={index}
-                              onPress={() => {onChange?.(opt.value); setShow(false)}}
+                              onPress={() => {onChange?.(String(opt.value)); setShow(false)}}
                             >
                                 <Wrapper flexDirection="row" gap={10}>
                                     {opt.value === value && <Octicons name="check" color={color.success.bg} size={16}/>}

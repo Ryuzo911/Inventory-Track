@@ -34,8 +34,8 @@ const TransactionListScreen = () => {
     });
   }, [transactions, sortedOrder]);
 
-  console.log("DEBUG transactions normalized:", transactions);
-  console.log("DEBUG raw response:", txRaw);
+  // console.log("DEBUG transactions normalized:", transactions);
+  // console.log("DEBUG raw response:", txRaw);
 
   return (
     <Wrapper flex={1}>
@@ -44,7 +44,7 @@ const TransactionListScreen = () => {
           Riwayat Transaksi
         </Text>
 
-        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+        <View style={{ flexDirection: "column", gap: 5, alignItems: "flex-start",  }}>
           <TouchableOpacity
             onPress={() => setSortedOrder("desc")}
             style={{
@@ -57,7 +57,8 @@ const TransactionListScreen = () => {
             }}
             activeOpacity={0.8}
           >
-            <Octicons name="arrow-down" size={18} color={sortedOrder === "desc" ? "#fff" : color.primary.bg} />
+            {/* <Octicons name="arrow-down" size={18} color={sortedOrder === "desc" ? "#fff" : color.primary.bg} /> */}
+            <Text>Terbaru</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -71,7 +72,8 @@ const TransactionListScreen = () => {
             }}
             activeOpacity={0.8}
           >
-            <Octicons name="arrow-up" size={18} color={sortedOrder === "asc" ? "#fff" : color.primary.bg} />
+            {/* <Octicons name="arrow-up" size={18} color={sortedOrder === "asc" ? "#fff" : color.primary.bg} /> */}
+            <Text>Terlama</Text>
           </TouchableOpacity>
         </View>
       </View>

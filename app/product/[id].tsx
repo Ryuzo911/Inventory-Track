@@ -5,7 +5,7 @@ import { Octicons, } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useColor } from "@/hooks/useColor";
 import { useGetCategory } from "@/hooks/useCategory";
-import { useGetProduct, useShowProduct } from "@/hooks/useProduct";
+import { useDeleteProduct, useGetProduct, useShowProduct } from "@/hooks/useProduct";
 import { useGetTransaction } from "@/hooks/useTransaction";
 
 import Wrapper from "@/components/Wrapper";
@@ -20,12 +20,13 @@ import Loading from "@/components/Loading";
 
 const LOW_STOCK_THRESHOLD = 5;
 
-const ProductDetailScreen = () => {
+const ProductDetailScreen = () => {;
   const { color } = useColor();
   const { id } = useLocalSearchParams();
   const productId = Number(id);
 
   const { data: product, isLoading, refetch } = useShowProduct(productId);
+  const deleteProduct = useDeleteProduct();
   const { data: categories } = useGetCategory();
 
   const { data: txRaw, isLoading: txLoading, refetch: refetchTx } = useGetTransaction();
@@ -62,12 +63,12 @@ const ProductDetailScreen = () => {
             <View style={{ flex: 1 }}>
               <Text variant="title">{product.name}</Text>
               <Text variant="subtitle" style={{ marginTop: 6, color: color.info.content }}>
-                Kategori: <Text style={{ fontWeight: "600" }}>{categoryName}</Text>
+                Kategori: <Text variant="subtitle" style={{ fontWeight: "600" }}>{categoryName}</Text>
               </Text>
             </View>
 
             <View style={{ marginLeft: 12, alignItems: "flex-end" }}>
-              <Text variant="subtitle" style={{ color: lowStock ? color.error.bg : color.success.bg }}>
+              <Text variant="subtitle" style={{ color: lowStock ? color.warning.bg : color.success.bg }}>
                 Stok
               </Text>
               <Text variant="title" style={{ marginTop: 6 }}>{product.stock}</Text>
@@ -77,7 +78,7 @@ const ProductDetailScreen = () => {
           {lowStock && (
             <View style={{ padding: 10, borderRadius: 8, backgroundColor: color.warning.bg }}>
               <Text style={{ color: color.warning.content }}>
-                Stok rendah — pertimbangkan untuk menambah stok.
+                Stok rendah, pertimbangkan untuk menambah stok.
               </Text>
             </View>
           )}
@@ -110,13 +111,13 @@ const ProductDetailScreen = () => {
                 renderItem={({ item }: any) => (
                   <View style={{ padding: 10, marginTop: 8, borderRadius: 8, backgroundColor: item.type === "in" ? color.success.bg : color.error.bg }}>
                     <Text>
-                      {item.type === "in" ? "Masuk" : "Keluar"} — {item.quantity}
+                      {item.type === "in" ? "Masuk" : "Keluar"}: {item.quantity}
                     </Text>
                     <Text style={{ fontSize: 12, color: color.info.content }}>
                       Oleh: {item.user?.name ?? item.created_by}
                     </Text>
                     <Text style={{ fontSize: 12, color: color.info.content }}>
-                      {item.created_at ? new Date(item.created_at).toLocaleString() : ""}
+                      Pada: {item.created_at ? new Date(item.created_at).toLocaleString() : ""}
                     </Text>
                   </View>
                 )}

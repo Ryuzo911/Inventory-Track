@@ -12,7 +12,7 @@ const apiCategory = {
         return data;
     },
     postCategory: async (payload: Omit<Category, "id">): Promise<Category> => {
-        const {data} = await api.post("/category")
+        const {data} = await api.post("/category", payload)
         return data;
     },
     putCategory: async (user: Category) => {

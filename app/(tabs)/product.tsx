@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { FlatList, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native'
 import ProductItem from '@/components/product/ProductItem'
 import CreateProductSheet from '@/components/product/CreateProduct'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 
 const ProductScreen = () => {
@@ -15,11 +16,13 @@ const ProductScreen = () => {
   const [search, setSearch] = useState<string>("");
   const {data, isLoading, refetch} = useGetProduct();
   const {color} = useColor();
+  console.log("show sheet",showSheet);
 
   const listData = data?.filter((item) => item.name.toString().toLowerCase().includes(search.toLowerCase()))
 
   return (
-      <Wrapper flex={1}>
+      <GestureHandlerRootView>
+        <Wrapper flex={1}>
         <Wrapper key={"header"} padding={20}>
           <Input placeholder="Cari Produk" value={search} onChangeText={setSearch} wrapperStyle={{}}/>  
         </Wrapper>
@@ -32,24 +35,33 @@ const ProductScreen = () => {
             paddingBottom: 100,
           }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />} />
 
-        <TouchableOpacity
-                onPress={() => setShowSheet(true)}
-                style={{
-                  position: "absolute",
-                  bottom: 24,
-                  right: 24,
-                  backgroundColor: color.primary.bg,
-                  borderRadius: 999,
-                  padding: 14,
-                  elevation: 6,
-                }}
-                activeOpacity={0.8}
-              >
-                <Octicons name="plus" size={24} color="#fff" />
-              </TouchableOpacity>
-             <CreateProductSheet visible={showSheet} onRequestClose={() => setShowSheet(false)}/>
+        <View pointerEvents='box-none' style={{
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          zIndex: 9999,
+          elevation: 99,
+        }}>
+          <TouchableOpacity onPress={() => {
+            console.log("open sheet");
+            setShowSheet(true);
+          }} activeOpacity={0.85} hitSlop={{top: 16, bottom: 16, left: 16, right: 16}} style={{
+            backgroundColor: color.primary.bg,
+            borderRadius: 999,
+            padding: 14,
+            alignItems: 'center',
+            justifyContent: 'center',
 
-      </Wrapper>
+          }}>
+            <Octicons name="plus" size={24} color="#fff" />
+          </TouchableOpacity>
+          <CreateProductSheet visible={showSheet} onRequestClose={() => {
+            console.log("close sheet");
+            setShowSheet(false);
+          }}/>
+        </View>
+        </Wrapper>
+      </GestureHandlerRootView>
     
   )
 }

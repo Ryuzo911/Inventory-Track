@@ -12,10 +12,12 @@ import BottomSheet from "../BottomSheet";
 import FormGroup from "../FormGroup";
 import IconButton from "../IconButton";
 import ErrorMessage from "../ErrorMessage";
+import * as SecureStore from 'expo-secure-store';
 import api from "@/utils/apis";
+import SelectCategory from "../category/SelectCategory";
 
 type EditProductProps = {
-  product: any; 
+  product: any;
 };
 
 const EditProduct: FC<EditProductProps> = ({ product }) => {
@@ -34,25 +36,59 @@ const EditProduct: FC<EditProductProps> = ({ product }) => {
   const handleSave = () => {
     const payload: any = {
       id: values.id,
-      name: values.name,
-      stock: parseInt(values.stock) || 0,
+      name: (values.name || "").trim(),
+      stock: parseInt(values.stock, 10) || 0,
       category_id: Number(values.category_id) || 0,
       image: values.image ?? null,
     };
 
+    console.log("Edit payload:", { ...payload, image: payload.image?.toString?.().slice?.(0, 60) });
+
     editProduct.mutate(payload, {
-      onSuccess: () => {
-        Alert.alert("Sukses", "Produk berhasil diupdate 🎉");
+      onSuccess: (res) => {
+        Alert.alert("Sukses", "Produk berhasil diupdate");
+        console.log("Update success:", res);
         setShow(false);
       },
       onError: (err: any) => {
-        console.error("Error update:", err);
-        Alert.alert("Error", "Gagal mengupdate produk ❌");
+        console.error("Error update:", err, err?.status);
+        const message =
+          err?.response?.data?.message ||
+          err?.response?.data?.errors ||
+          err?.message ||
+          "Gagal mengupdate produk";
+        Alert.alert("Error", JSON.stringify(message), );
       },
     });
   };
 
-  console.log("values", values);
+//   const testUploadFetch = async (id: number, imageUri: string) => {
+//   try {
+//     const fd = new FormData();
+//     fd.append("_method", "PUT");
+//     fd.append("name", "Air");
+//     fd.append("stock", "1");
+//     fd.append("image", {
+//       uri: imageUri,
+//       name: `test_${Date.now()}.jpg`,
+//       type: "image/jpeg",
+//     } as any);
+
+//     const res = await fetch(`http://10.225.155.168:8000/api/product/${id}`, {
+//       method: "POST",
+//       headers: {
+//         Accept: "application/json",
+//         Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`
+//       },
+//       body: fd,
+//     });
+
+//     const json = await res.json();
+//     console.log("FETCH UPLOAD status:", res.status, json);
+//   } catch (e:any) {
+//     console.error("FETCH UPLOAD ERR:", e.message);
+//   }
+// };
 
   return (
     <GestureHandlerRootView>
@@ -80,17 +116,17 @@ const EditProduct: FC<EditProductProps> = ({ product }) => {
             value={values.stock}
             onChangeText={(text) => setValues({ ...values, stock: text })}
           />
-          <Select
+          <SelectCategory
             withReset={false}
             label="Kategori"
-            value={values.category_id?.toString()}
+            value={values.category_id?.toString() ?? ""}
             options={
               categories?.map((cat: any) => ({
                 label: cat.name,
                 value: cat.id.toString(),
               })) || []
             }
-            onChange={(id) => setValues({ ...values, category_id: parseInt(id) })}
+            onChange={(id) => setValues({ ...values, category_id: parseInt(String(id)) })}
           />
           <ImageSelector
             label="Gambar Produk"

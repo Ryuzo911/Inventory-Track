@@ -53,7 +53,7 @@ const LoginScreen = () => {
       <Button label="Login " icon="sign-in" onPress={handleLogin} loading={isPending}/>
     </Wrapper>
     </Wrapper>
-    <Text onPress={() => router.push("/register")}>Belum punya akun? Buat di sini!</Text>
+    <Text>Belum punya akun? <Text style={{textDecorationLine: "underline"}} onPress={() => router.push("/register")}>Buat di sini!</Text></Text>
     </Wrapper>
   )
 };
