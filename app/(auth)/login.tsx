@@ -43,7 +43,7 @@ const LoginScreen = () => {
     <Text>Selamat datang di halaman login</Text>
     {error && <Text color={color.error.bg} >{error.message}</Text>}
     <Wrapper width={"100%"} gap={10}>
-      <Input placeholder="Email address" value={email} onChangeText={setEmail}/>
+      <Input placeholder="Email address" value={email} onChangeText={setEmail} keyboardType="email-address"/>
       <Input secureTextEntry={!show} placeholder="Password" value={password} onChangeText={setPassword}/>
       <Wrapper>
         <Text>Lupa password?</Text>

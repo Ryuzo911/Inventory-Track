@@ -4,11 +4,12 @@ import { useColor } from '@/hooks/useColor'
 import { useGetProduct } from '@/hooks/useProduct'
 import { Octicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import { FlatList, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native'
 import ProductItem from '@/components/product/ProductItem'
 import CreateProductSheet from '@/components/product/CreateProduct'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { usePermissions } from '@/hooks/authentication/usePermissions'
 
 
 const ProductScreen = () => {
@@ -16,7 +17,8 @@ const ProductScreen = () => {
   const [search, setSearch] = useState<string>("");
   const {data, isLoading, refetch} = useGetProduct();
   const {color} = useColor();
-  console.log("show sheet",showSheet);
+  const {hasPermission} = usePermissions();
+  // console.log("show sheet",showSheet, hasPermission);
 
   const listData = data?.filter((item) => item.name.toString().toLowerCase().includes(search.toLowerCase()))
 
@@ -42,7 +44,8 @@ const ProductScreen = () => {
           zIndex: 9999,
           elevation: 99,
         }}>
-          <TouchableOpacity onPress={() => {
+          {hasPermission('manage_product') && (
+            <TouchableOpacity onPress={() => {
             console.log("open sheet");
             setShowSheet(true);
           }} activeOpacity={0.85} hitSlop={{top: 16, bottom: 16, left: 16, right: 16}} style={{
@@ -55,8 +58,9 @@ const ProductScreen = () => {
           }}>
             <Octicons name="plus" size={24} color="#fff" />
           </TouchableOpacity>
+          )}
           <CreateProductSheet visible={showSheet} onRequestClose={() => {
-            console.log("close sheet");
+            // console.log("close sheet");
             setShowSheet(false);
           }}/>
         </View>

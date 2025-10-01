@@ -10,7 +10,7 @@ type BottomSheetProps = ModalProps & {
 
 const BottomSheet: FC<BottomSheetProps> = ({title, children, ...props}) => {
     const {color} = useColor();
-    console.log("BottomSheet rendered with title:", title);
+    // console.log("BottomSheet rendered with title:", title);
     return (
         <Modal transparent animationType="slide" statusBarTranslucent visible={props.visible} {...props} onRequestClose={props.onRequestClose}>
             <Wrapper backgroundColor={"rgba(0, 0, 0, 0.5)"} flex={1} elevation={1}>

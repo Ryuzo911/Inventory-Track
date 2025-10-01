@@ -17,10 +17,12 @@ import EditProduct from "@/components/product/EditProduct";
 import DeleteProduct from "@/components/product/DeleteProduct";
 import CreateTransaction from "@/components/transaction/CreateTransaction"; // sheet for add/reduce stock
 import Loading from "@/components/Loading";
+import { usePermissions } from "@/hooks/authentication/usePermissions";
 
 const LOW_STOCK_THRESHOLD = 5;
 
-const ProductDetailScreen = () => {;
+const ProductDetailScreen = () => {
+  const {hasPermission} = usePermissions();
   const { color } = useColor();
   const { id } = useLocalSearchParams();
   const productId = Number(id);
@@ -84,10 +86,12 @@ const ProductDetailScreen = () => {;
           )}
 
       
-          <View style={{ flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", marginHorizontal: 110 }}>
+          {hasPermission('manage_product') && (
+            <View style={{ flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", marginHorizontal: 110 }}>
             <EditProduct product={product} />
             <DeleteProduct product={product} />
           </View>
+          )}
 
           <View style={{paddingTop: 12, borderRadius: 8, backgroundColor: color.base.bg }}>
             <Text variant="subtitle">Detail Produk</Text>
@@ -111,7 +115,7 @@ const ProductDetailScreen = () => {;
                 renderItem={({ item }: any) => (
                   <View style={{ padding: 10, marginTop: 8, borderRadius: 8, backgroundColor: item.type === "in" ? color.success.bg : color.error.bg }}>
                     <Text>
-                      {item.type === "in" ? "Masuk" : "Keluar"}: {item.quantity}
+                      {item.type === "in" ? "Masuk" : "Keluar"}: {item.quantity} pcs
                     </Text>
                     <Text style={{ fontSize: 12, color: color.info.content }}>
                       Oleh: {item.user?.name ?? item.created_by}

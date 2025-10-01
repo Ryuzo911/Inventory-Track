@@ -26,6 +26,11 @@ const apiUser = {
         const{data} = await api.post('/logout');
         await SecureStore.deleteItemAsync('token');
         return data;
+    },
+
+    getPermissions: async () => {
+        const {data} = await api.get('/user/permissions');
+        return data;
     }
 };
 

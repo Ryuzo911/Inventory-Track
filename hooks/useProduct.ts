@@ -65,7 +65,7 @@ export const useEditProduct = () => {
         });
 
         const ext = (image!.split(".").pop() || "jpg").replace(/[^a-z0-9]/gi, "");
-        const mimeType = ext.toLowerCase().includes("jpg") ? "image/jpeg" : `image/${ext}`;
+        const mimeType = ext.toLowerCase().includes("jpg" ) ? "image/jpeg" : `image/${ext}`;
 
         form.append("image", {
           uri: image,

@@ -111,7 +111,7 @@ const CreateProductSheet: FC<CreateProductSheetProps> = ({ visible, onRequestClo
             onChange={handleCategoryChange}
           />
 
-          <ImageSelector label="Pilih Gambar (opsional)" value={image || ""} onChange={setImage} />
+          <ImageSelector label="Pilih Gambar (opsional dan pastikan format gambar jpg atau jpeg)" value={image || ""} onChange={setImage} />
 
           <Button
             label={createProduct.isPending ? "Menyimpan..." : "Simpan Produk"}
