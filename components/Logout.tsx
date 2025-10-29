@@ -35,7 +35,7 @@ const Logout = () => {
 
     return( 
     <Wrapper justifyContent="center" alignItems="center" gap={30}>
-        <IconButton icon={"sign-out"} color={"warning"} size="large" onPress={handleLogout} />
+        <IconButton icon={"sign-out"} color={"error"} size="large" onPress={handleLogout} />
     </Wrapper>
     );
 };

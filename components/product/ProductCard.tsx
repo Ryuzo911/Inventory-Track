@@ -27,10 +27,10 @@ const ProductCard: FC<ProductCardProps> = ({name, stock, image_url}) => {
                             <Octicons name="file-media" color={color.primary.content} size={50}/>
                         </Wrapper>
                     )}
-                    <Wrapper flex={1} alignItems="center">
+                    {/* <Wrapper flex={1} alignItems="center">
                         <Text variant="title">{name}</Text>
                         <Text variant="subtitle">{stock}</Text>
-                    </Wrapper>
+                    </Wrapper> */}
                 </Wrapper>
             </TouchableOpacity>
         </Wrapper>

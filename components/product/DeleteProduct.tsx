@@ -33,7 +33,7 @@ const DeleteProduct: FC<DeleteProductProps> = ({ product }) => {
       <IconButton
         icon="trash"
         size="small"
-        color="primary"
+        color="warning"
         onPress={() => setShow(true)}
       />
       <Popup

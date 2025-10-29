@@ -61,7 +61,7 @@ const RegisterScreen = () => {
   
   return (
     <Wrapper padding={40} alignItems="center" justifyContent="center" flex={1} gap={30}>
-      <Octicons name="code" color={color.primary.bg} size={82}/>
+      <Octicons name="package" color={color.primary.bg} size={82}/>
       <Wrapper width={"100%"} gap={10}>
         <Text>
           Selamat datang di halaman register, silahkan masukkan nama, email, dan password anda.

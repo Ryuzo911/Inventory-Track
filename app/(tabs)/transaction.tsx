@@ -1,17 +1,20 @@
 import React, { useState, useMemo } from "react";
-import { FlatList, View, TouchableOpacity } from "react-native";
+import { FlatList, View, TouchableOpacity, RefreshControl } from "react-native";
 import Wrapper from "@/components/Wrapper";
 import Text from "@/components/Text";
 import { useGetTransaction } from "@/hooks/useTransaction";
 import AddTransactionSheet from "@/components/transaction/CreateTransaction";
 import { Octicons } from "@expo/vector-icons";
 import { useColor } from "@/hooks/useColor";
+import { usePermissions } from "@/hooks/authentication/usePermissions";
 
 const TransactionListScreen = () => {
   const [showSheet, setShowSheet] = useState(false);
   const { color } = useColor();
 
   const { data: txRaw, isLoading, refetch } = useGetTransaction();
+
+  const isOwner = usePermissions();
 
   const transactions = useMemo(() => {
     if (!txRaw) return [];
@@ -84,8 +87,7 @@ const TransactionListScreen = () => {
         <FlatList
           data={sortedTransactions}
           keyExtractor={(item: any) => String(item.id)}
-          onRefresh={refetch}
-          refreshing={isLoading}
+          refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[color.primary.bg]} tintColor={color.primary.bg}/>}
           contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
           renderItem={({ item }: any) => (
             <View
@@ -121,7 +123,8 @@ const TransactionListScreen = () => {
         />
       )}
 
-      <TouchableOpacity
+      {!isOwner.hasPermission("manage_transaction") ? null : (
+        <TouchableOpacity
         onPress={() => setShowSheet(true)}
         style={{
           position: "absolute",
@@ -136,8 +139,8 @@ const TransactionListScreen = () => {
       >
         <Octicons name="plus" size={24} color="#fff" />
       </TouchableOpacity>
-
-      <AddTransactionSheet
+      )}
+       <AddTransactionSheet
         visible={showSheet}
         onRequestClose={() => {
           setShowSheet(false);

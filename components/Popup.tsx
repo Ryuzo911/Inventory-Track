@@ -1,4 +1,3 @@
-// components/Popup.tsx
 import React, { FC } from "react";
 import { Modal, ModalProps } from "react-native";
 import Button from "./Button";

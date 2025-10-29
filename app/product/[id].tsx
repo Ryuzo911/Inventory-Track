@@ -58,9 +58,9 @@ const ProductDetailScreen = () => {
   return (
     <Wrapper flex={1}>
       <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={() => { refetch(); refetchTx(); }} />}>
-        <ProductCard image_url={product.image_url ?? ""} />
+        <ProductCard image_url={product.image_url ?? ""}/>
 
-        <Wrapper padding={16} gap={12}>
+        <Wrapper padding={16} gap={12} >
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <View style={{ flex: 1 }}>
               <Text variant="title">{product.name}</Text>

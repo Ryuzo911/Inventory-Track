@@ -42,6 +42,9 @@ export default function RootLayout() {
             <Stack>
               <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="product" options={{ headerShown: false }} />
+              <Stack.Screen name="category" options={{ headerShown: false }} />
+              <Stack.Screen name="admin" options={{ headerShown: false }} />
             </Stack>
           </View>
         </SessionProvider>

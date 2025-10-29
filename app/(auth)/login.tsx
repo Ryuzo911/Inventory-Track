@@ -39,21 +39,21 @@ const LoginScreen = () => {
     flex={1}
     gap={30}
 >
-    <Octicons name="code" color={color.primary.bg} size={82}/>
-    <Text>Selamat datang di halaman login</Text>
+    <Octicons name="package" color={color.primary.bg} size={82}/>
+    <Text>Selamat datang di halaman login, silahkan masukan email dan password anda</Text>
     {error && <Text color={color.error.bg} >{error.message}</Text>}
     <Wrapper width={"100%"} gap={10}>
       <Input placeholder="Email address" value={email} onChangeText={setEmail} keyboardType="email-address"/>
       <Input secureTextEntry={!show} placeholder="Password" value={password} onChangeText={setPassword}/>
       <Wrapper>
-        <Text>Lupa password?</Text>
+        {/* <Text>Lupa password?</Text> */}
         <PasswordToggler show={show} setShow={setShow}/>
       </Wrapper>
     <Wrapper>
       <Button label="Login " icon="sign-in" onPress={handleLogin} loading={isPending}/>
     </Wrapper>
     </Wrapper>
-    <Text>Belum punya akun? <Text style={{textDecorationLine: "underline"}} onPress={() => router.push("/register")}>Buat di sini!</Text></Text>
+    {/* <Text>Belum punya akun? <Text style={{textDecorationLine: "underline"}} onPress={() => router.push("/register")}>Buat di sini!</Text></Text> */}
     </Wrapper>
   )
 };

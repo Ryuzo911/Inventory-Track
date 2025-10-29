@@ -13,7 +13,7 @@ export const usePermissions = () => {
       try {
         setLoading(true);
         const data = await apiUser.getPermissions();
-        // console.log("Fetched permissions:", data);
+        console.log("Fetched permissions:", data);
 
         const perms: PermissionMap = data?.permissions ?? {};
         const userRole = data?.role ?? null;

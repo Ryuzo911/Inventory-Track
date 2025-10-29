@@ -10,6 +10,7 @@ import ProductItem from '@/components/product/ProductItem'
 import CreateProductSheet from '@/components/product/CreateProduct'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { usePermissions } from '@/hooks/authentication/usePermissions'
+import Text from '@/components/Text'
 
 
 const ProductScreen = () => {
@@ -26,7 +27,10 @@ const ProductScreen = () => {
       <GestureHandlerRootView>
         <Wrapper flex={1}>
         <Wrapper key={"header"} padding={20}>
-          <Input placeholder="Cari Produk" value={search} onChangeText={setSearch} wrapperStyle={{}}/>  
+          <Input placeholder="Cari Produk" value={search} onChangeText={setSearch} wrapperStyle={{}}/> 
+          <Wrapper marginTop={12} flexDirection='row' justifyContent='flex-end' alignItems='center'>
+            <Text variant='label' onPress={() => router.push('/category/CategoryList')} style={{textDecorationLine: 'underline', color: color.primary.bg}}>Lihat Daftar Kategori</Text>
+          </Wrapper> 
         </Wrapper>
           <FlatList data={listData}  keyExtractor={(item) => item.id?.toString() ?? ''} renderItem={({item}) => (
             <TouchableOpacity>
@@ -35,7 +39,7 @@ const ProductScreen = () => {
           )} contentContainerStyle={{
             paddingHorizontal: 16,
             paddingBottom: 100,
-          }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />} />
+          }} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[color.primary.bg]} tintColor={color.primary.bg}/>} />
 
         <View pointerEvents='box-none' style={{
           position: 'absolute',

@@ -11,14 +11,25 @@ import { useGetTransaction } from '@/hooks/useTransaction';
 import apiProduct from '@/utils/apis/apiProduct';
 import { router } from 'expo-router';
 import React, { use, useEffect, useState } from 'react';
-import { FlatList, ScrollView, View } from 'react-native';
+import { FlatList, ScrollView, View, RefreshControl } from 'react-native';
 
 
 const HomeScreen = () => {
-  const { data: product = [], isLoading: isLoadingProduct, error: errorProduct } = useGetProduct();
-  const { data: transaction = [], isLoading: isLoadingTransaction, error: errorTransaction } = useGetTransaction();
+  const { data: product = [], isLoading: isLoadingProduct, error: errorProduct, refetch: refetchProduct } = useGetProduct();
+  const { data: transaction = [], isLoading: isLoadingTransaction, error: errorTransaction, refetch: refetchTransaction } = useGetTransaction();
   const lowStock = product.filter((p) => p.stock < 5);
   const {color} = useColor();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // panggil kedua refetch bersamaan
+    await Promise.all([
+      refetchProduct ? refetchProduct() : Promise.resolve(),
+      refetchTransaction ? refetchTransaction() : Promise.resolve()
+    ]);
+    setRefreshing(false);
+  };
 
   if (isLoadingProduct || isLoadingTransaction) {
     return (
@@ -35,7 +46,16 @@ const HomeScreen = () => {
   };
 
   return (
-  <ScrollView>
+  <ScrollView
+    refreshControl={
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        colors={[color.primary.bg]}
+        tintColor={color.primary.bg}
+      />
+    }
+  >
      <Wrapper gap={30}>
     <Card header={<Text variant="title" color={color.primary.bg}>Inventory Sumarry</Text>}>
       <Card header={

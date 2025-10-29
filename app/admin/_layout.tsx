@@ -5,10 +5,9 @@ import { useSession } from "@/hooks/useSession";
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUi  from "expo-system-ui"
-import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const ProductLayout = () => {
+const AdminLayout = () => {
     const {color} = useColor();
     SystemUi.setBackgroundColorAsync(color.base.bg);
 
@@ -24,7 +23,7 @@ const ProductLayout = () => {
 
     if (!session) {
         return <Redirect href="/login"/>
-    }
+    };
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: color.base.bg}}>
@@ -40,11 +39,10 @@ const ProductLayout = () => {
                     backgroundColor: color.base.bg as string,
                 },
             }}>
-                <Stack.Screen name="[id]" options={{title: "Product Detail",}}/>
-                <Stack.Screen name="lowstock" options={{title: "Low Stock Product"}}/>
+                <Stack.Screen name="AdminScreen" options={{title: "Kelola Akun", }}/>
             </Stack>
         </SafeAreaView>
     );
 };
 
-export default ProductLayout;
+export default AdminLayout;

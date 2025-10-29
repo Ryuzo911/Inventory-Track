@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { FlatList, RefreshControl, View, Animated, Easing } from "react-native";
 import Wrapper from "@/components/Wrapper";
-import Text from "@/components/Text";
 import Input from "@/components/Input";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
@@ -12,6 +11,7 @@ import { useColor } from "@/hooks/useColor";
 import { usePermissions } from "@/hooks/authentication/usePermissions";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
+import Text from "@/components/Text";
 
 const LOW_STOCK_THRESHOLD = 5;
 
@@ -49,7 +49,7 @@ const ReportScreen = () => {
     return list;
   }, [products, query, categoryFilter, sortOrder]);
 
-  const canAccess = hasPermission("manage_product") && (role === "owner" || role === "admin");
+  const canAccess = (role === "owner" || role === "admin") || hasPermission("manage_product");
 
   const shakeAnim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -166,7 +166,7 @@ const ReportScreen = () => {
         <Text variant="menutitle" style={{ width: 80, textAlign: "right", fontWeight: 600 }}>Stok</Text>
       </Wrapper>
 
-      <FlatList data={filtered} keyExtractor={(item:any) => String(item.id)} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={pendingProducts} onRefresh={refetchProducts} />} contentContainerStyle={{ paddingBottom: 120 }} renderItem={renderRow} />
+      <FlatList data={filtered} keyExtractor={(item:any) => String(item.id)} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={pendingProducts} onRefresh={refetchProducts} colors={[color.primary.bg]} tintColor={color.primary.bg}/>} contentContainerStyle={{ paddingBottom: 120 }} renderItem={renderRow} />
 
       <Wrapper position="absolute" bottom={16} left={16} right={16} alignItems="center">
         <View style={{ width: "100%" }}>
