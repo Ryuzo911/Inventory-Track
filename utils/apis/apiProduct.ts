@@ -22,7 +22,7 @@ const apiProduct = {
   uploadProductFetch: async (id: number, fd: FormData) => {
     const token = await SecureStore.getItemAsync("token");
 
-    const res = await fetch(`http://10.177.164.168:8000/api/product/${id}`, {
+    const res = await fetch(`http://172.21.5.168:8000/api/product/${id}`, {
       method: "POST",
       headers: {
         Accept: "application/json",

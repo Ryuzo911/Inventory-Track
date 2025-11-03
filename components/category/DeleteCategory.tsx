@@ -3,7 +3,6 @@ import { Category } from "@/utils/types/category";
 import { FC, useState } from "react";
 import { Alert } from "react-native";
 import Popup from "../Popup";
-import { router } from "expo-router";
 
 type DeleteCategoryProps = {
   category: Category;
@@ -28,7 +27,10 @@ const DeleteCategory: FC<DeleteCategoryProps> = ({
             onRequestClose();   
           })
           .catch((e) => {
-            console.error("Gagal menghapus produk:", e.message);
+            Alert.alert("Gagal menghapus kategori.", "Ada produk yang menggunakan kategori ini");
+          })
+          .then(() => {
+            onRequestClose();
           });
   };
 
@@ -39,7 +41,7 @@ const DeleteCategory: FC<DeleteCategoryProps> = ({
       visible={visible}
       onRequestClose={onRequestClose}
       loading={isPending}
-      error={error?.message}
+      // error={error?.message}
       onConfirm={handleDelete}
     />
   );

@@ -12,7 +12,7 @@ type PopupProps = ModalProps & {
   error?: string;
   loading?: boolean;
   onConfirm?: () => void;
-  onRequestClose: () => void; // Dibuat wajib agar popup bisa ditutup
+  onRequestClose: () => void;
 };
 
 const Popup: FC<PopupProps> = ({
